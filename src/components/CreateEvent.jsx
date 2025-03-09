@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -8,7 +9,15 @@ import Header from '../components/Header'; // Import the Navbar
 const CreateEvent = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [newEvent, setNewEvent] = useState({ title: '', date: '', category: '', image: '', file: null });
+  const [newEvent, setNewEvent] = useState({
+    title: '',
+    date: '',
+    category: '',
+    image: '',
+    location: '',
+    description: '',  // Add description to the state
+    file: null,
+  });
   const [successMessage, setSuccessMessage] = useState('');
   const [imagePreview, setImagePreview] = useState(null); // To show image preview
 
@@ -26,7 +35,13 @@ const CreateEvent = () => {
   };
 
   const handleSubmit = () => {
-    if (!newEvent.title || !newEvent.date || !newEvent.category) {
+    if (
+      !newEvent.title ||
+      !newEvent.date ||
+      !newEvent.category ||
+      !newEvent.location ||
+      !newEvent.description  // Ensure description is also filled
+    ) {
       setSuccessMessage('Please fill all required fields.');
       return;
     }
@@ -54,14 +69,14 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       {/* Navbar */}
       <Header />
 
       {/* Main Content */}
       <div className="container mx-auto px-6 pt-24">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">Create New Event</h1>
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold text-gray-200 mb-6">Create New Event</h1>
+        <div className="bg-gray-800 p-8 rounded-lg shadow-md">
           {/* Event Title */}
           <TextField
             fullWidth
@@ -69,8 +84,11 @@ const CreateEvent = () => {
             name="title"
             value={newEvent.title}
             onChange={handleInputChange}
-            className="mb-6"  // Increased margin bottom for spacing
+            className="mb-6"
             required
+            variant="outlined"
+            InputLabelProps={{ style: { color: '#b3b3b3' } }}
+            InputProps={{ style: { color: '#ffffff' } }}
           />
           
           {/* Event Date */}
@@ -81,20 +99,24 @@ const CreateEvent = () => {
             name="date"
             value={newEvent.date}
             onChange={handleInputChange}
-            InputLabelProps={{ shrink: true }}
-            className="mb-6"  // Increased margin bottom for spacing
+            InputLabelProps={{ shrink: true, style: { color: '#b3b3b3' } }}
+            className="mb-6"
             required
+            variant="outlined"
+            InputProps={{ style: { color: '#ffffff' } }}
           />
           
           {/* Event Category */}
-          <FormControl fullWidth className="mb-6">  {/* Increased margin bottom */}
-            <InputLabel>Category</InputLabel>
+          <FormControl fullWidth className="mb-6">
+            <InputLabel style={{ color: '#b3b3b3' }}>Category</InputLabel>
             <Select
               name="category"
               value={newEvent.category}
               onChange={handleInputChange}
               label="Category"
               required
+              variant="outlined"
+              style={{ color: '#ffffff' }}
             >
               <MenuItem value="Donation">Donation</MenuItem>
               <MenuItem value="Religious">Religious</MenuItem>
@@ -102,30 +124,63 @@ const CreateEvent = () => {
             </Select>
           </FormControl>
 
+          {/* Event Location */}
+          <TextField
+            fullWidth
+            label="Event Location"
+            name="location"
+            value={newEvent.location}
+            onChange={handleInputChange}
+            className="mb-6"
+            required
+            variant="outlined"
+            InputLabelProps={{ style: { color: '#b3b3b3' } }}
+            InputProps={{ style: { color: '#ffffff' } }}
+          />
+
+          {/* Event Description */}
+          <TextField
+            fullWidth
+            label="Event Description"
+            name="description"
+            value={newEvent.description}
+            onChange={handleInputChange}
+            multiline
+            rows={4}
+            className="mb-6"
+            required
+            variant="outlined"
+            InputLabelProps={{ style: { color: '#b3b3b3' } }}
+            InputProps={{ style: { color: '#ffffff' } }}
+          />
+          
           {/* Image URL */}
-          {!newEvent.file && ( // Only show Image URL input if no file is uploaded
+          {!newEvent.file && (
             <TextField
               fullWidth
               label="Image URL"
               name="image"
               value={newEvent.image}
               onChange={handleInputChange}
-              className="mb-6"  // Increased margin bottom for spacing
-              required={!newEvent.file} // Make it required only when no file is uploaded
+              className="mb-6"
+              required={!newEvent.file}
+              variant="outlined"
+              InputLabelProps={{ style: { color: '#b3b3b3' } }}
+              InputProps={{ style: { color: '#ffffff' } }}
             />
           )}
 
           {/* Image Upload */}
-          <div className="mb-6">  {/* Increased margin bottom */}
+          <div className="mb-6">
             <input
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              className="border p-2 mb-4"  // Added padding and margin bottom for file input
+              className="border p-2 mb-4 text-gray-200"
             />
             {imagePreview && (
               <div className="mt-4">
-                <h3 className="text-gray-800 font-medium">Image Preview:</h3>
+                <h3 className="text-gray-200 font-medium">Image Preview:</h3>
                 <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover mt-2" />
               </div>
             )}
@@ -137,6 +192,7 @@ const CreateEvent = () => {
               variant="contained"
               color="primary"
               onClick={handleSubmit}
+              className="w-1/2 bg-blue-600 hover:bg-blue-700"
             >
               Add Event
             </Button>
@@ -144,12 +200,13 @@ const CreateEvent = () => {
               variant="outlined"
               color="secondary"
               onClick={() => navigate('/events')}
+              className="w-1/2 text-gray-200 border-gray-200 hover:border-gray-400"
             >
               Back to Events
             </Button>
           </div>
           {successMessage && (
-            <p className="mt-4 text-green-600">{successMessage}</p>
+            <p className="mt-4 text-green-400">{successMessage}</p>
           )}
         </div>
       </div>
@@ -158,3 +215,7 @@ const CreateEvent = () => {
 };
 
 export default CreateEvent;
+
+
+
+

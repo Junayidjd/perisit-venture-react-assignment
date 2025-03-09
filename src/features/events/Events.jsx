@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -8,21 +9,14 @@ const Events = () => {
   const events = useSelector((state) => state.events.events);
   const [filter, setFilter] = useState("Today");
 
-  // Filter events based on the selected filter
-  const filteredEvents = events.filter((event) => {
-    if (filter === "Today") return true;
-    if (filter === "Tomorrow") return true;
-    return true; // Default to show all events
-  });
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900">
       {/* Navbar */}
       <Header />
 
       {/* Main Content */}
       <div className="container mx-auto px-6 pt-24">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6">
+        <h1 className="text-3xl font-bold text-gray-200 mb-6">
           We Helped Communities Connect & Flourish
         </h1>
 
@@ -45,14 +39,14 @@ const Events = () => {
 
         {/* Event Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredEvents.map((event) => (
+          {events.map((event) => (
             <div
               key={event.id}
-              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+              className="bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
             >
               {/* Event Image */}
               <img
-                src={event.image} // Dynamic image path
+                src={event.image} // Updated path
                 alt={event.title}
                 className="w-full h-48 object-cover"
               />
@@ -73,18 +67,23 @@ const Events = () => {
                 </div>
 
                 {/* Event Title */}
-                <h2 className="text-xl font-bold text-gray-800 mb-2">
+                <h2 className="text-xl font-bold text-gray-200 mb-2">
                   {event.title}
                 </h2>
 
                 {/* Event Date and Time */}
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-400 mb-2">
                   {event.date} | {event.time}
+                </p>
+
+                {/* Event Location */}
+                <p className="text-gray-400 mb-4">
+                  Location: {event.location}
                 </p>
 
                 {/* View Details Button */}
                 <Link
-                  to={`/event/${event.id}`} // Dynamic navigation based on event id
+                  to={`/event/${event.id}`}
                   className="block w-full bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700"
                 >
                   View Details

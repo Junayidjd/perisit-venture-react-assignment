@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Events from './features/events/Events';
 import CreateEvent from './components/CreateEvent';
 import EventDetails from './pages/EventDetails'; // Correct import
+import About from './components/About';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events />} />
         <Route path="/create-event" element={<CreateEvent />} />
+        <Route path="/about" element={<About />} />
         <Route path="/event/:id" element={<EventDetails />} /> {/* Updated to use EventDetails */}
       </Routes>
     </Router>

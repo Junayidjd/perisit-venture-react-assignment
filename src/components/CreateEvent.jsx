@@ -3,8 +3,20 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addEvent } from '../features/events/eventsSlice';
-import { TextField, Button, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import Header from '../components/Header'; // Import the Navbar
+import { motion } from "framer-motion"; // Import Framer Motion
+
+// Import shadcn Select components
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const CreateEvent = () => {
   const navigate = useNavigate();
@@ -15,7 +27,7 @@ const CreateEvent = () => {
     category: '',
     image: '',
     location: '',
-    description: '',  // Add description to the state
+    description: '', // Add description to the state
     file: null,
   });
   const [successMessage, setSuccessMessage] = useState('');
@@ -34,13 +46,17 @@ const CreateEvent = () => {
     }
   };
 
+  const handleCategoryChange = (value) => {
+    setNewEvent({ ...newEvent, category: value });
+  };
+
   const handleSubmit = () => {
     if (
       !newEvent.title ||
       !newEvent.date ||
       !newEvent.category ||
       !newEvent.location ||
-      !newEvent.description  // Ensure description is also filled
+      !newEvent.description // Ensure description is also filled
     ) {
       setSuccessMessage('Please fill all required fields.');
       return;
@@ -69,14 +85,24 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-gray-900"
+    >
       {/* Navbar */}
       <Header />
 
       {/* Main Content */}
       <div className="container mx-auto px-6 pt-24">
         <h1 className="text-3xl font-bold text-gray-200 mb-6">Create New Event</h1>
-        <div className="bg-gray-800 p-8 rounded-lg shadow-md">
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="bg-gray-800 p-8 rounded-lg shadow-md"
+        >
           {/* Event Title */}
           <TextField
             fullWidth
@@ -107,22 +133,24 @@ const CreateEvent = () => {
           />
           
           {/* Event Category */}
-          <FormControl fullWidth className="mb-6">
-            <InputLabel style={{ color: '#b3b3b3' }}>Category</InputLabel>
-            <Select
-              name="category"
-              value={newEvent.category}
-              onChange={handleInputChange}
-              label="Category"
-              required
-              variant="outlined"
-              style={{ color: '#ffffff' }}
-            >
-              <MenuItem value="Donation">Donation</MenuItem>
-              <MenuItem value="Religious">Religious</MenuItem>
-              <MenuItem value="Social">Social</MenuItem>
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2">
+              Category
+            </label>
+            <Select onValueChange={handleCategoryChange} value={newEvent.category}>
+              <SelectTrigger className="w-full bg-gray-700 text-gray-200">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent className="bg-gray-800 text-gray-200">
+                <SelectGroup>
+                  <SelectLabel>Categories</SelectLabel>
+                  <SelectItem value="Donation">Donation</SelectItem>
+                  <SelectItem value="Religious">Religious</SelectItem>
+                  <SelectItem value="Social">Social</SelectItem>
+                </SelectGroup>
+              </SelectContent>
             </Select>
-          </FormControl>
+          </div>
 
           {/* Event Location */}
           <TextField
@@ -172,16 +200,23 @@ const CreateEvent = () => {
 
           {/* Image Upload */}
           <div className="mb-6">
+            <label className="block text-sm font-medium text-gray-200 mb-2">
+              Upload Image
+            </label>
             <input
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-              className="border p-2 mb-4 text-gray-200"
+              className="file:mr-4 file:rounded-full file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
             />
             {imagePreview && (
               <div className="mt-4">
                 <h3 className="text-gray-200 font-medium">Image Preview:</h3>
-                <img src={imagePreview} alt="Preview" className="w-32 h-32 object-cover mt-2" />
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-32 h-32 object-cover mt-2 rounded-lg"
+                />
               </div>
             )}
           </div>
@@ -208,14 +243,10 @@ const CreateEvent = () => {
           {successMessage && (
             <p className="mt-4 text-green-400">{successMessage}</p>
           )}
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 export default CreateEvent;
-
-
-
-

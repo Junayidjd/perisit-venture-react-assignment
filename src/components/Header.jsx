@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/Logocommunion.0485ada0760e4748313f.png';
+
 
 const Header = () => {
   return (
@@ -7,11 +9,11 @@ const Header = () => {
       <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
         <Link to="/" aria-label="Home">
-          <img
-            src="src/assets/Logocommunion.0485ada0760e4748313f.png" // Update the path to your logo
+        <img
+            src={logo}
             alt="Communion App Logo"
             className="h-10"
-          />
+        />
         </Link>
 
         {/* Navigation Links */}

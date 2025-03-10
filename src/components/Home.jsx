@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -28,21 +27,46 @@ const Home = () => {
         transition={{ delay: 0.2, duration: 0.5 }}
         className="hero text-center py-32 bg-gray-800 text-white"
       >
-        <h1 className="text-4xl font-bold mb-4">Connecting People Across Faiths & Interests</h1>
-        <p className="mb-8">Connecting people of all faiths through events and community support.</p>
-        <Link to="/events">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-          >
-            Explore Events
-          </motion.button>
-        </Link>
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.5 }}
+          className="text-4xl font-bold mb-4"
+        >
+          Connecting People Across Faiths & Interests
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="mb-8"
+        >
+          Connecting people of all faiths through events and community support.
+        </motion.p>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+        >
+          <Link to="/events">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Explore Events
+            </motion.button>
+          </Link>
+        </motion.div>
       </motion.section>
 
       {/* Featured Events Section */}
-      <div className="container mx-auto px-6 py-12">
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.5 }}
+        className="container mx-auto px-6 py-12"
+      >
         <h2 className="text-3xl font-bold text-gray-200 mb-6">Featured Events</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {/* Example Event Cards */}
@@ -50,7 +74,7 @@ const Home = () => {
             <Card key={event} event={event} hoveredCard={hoveredCard} setHoveredCard={setHoveredCard} />
           ))}
         </div>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };
@@ -126,10 +150,12 @@ const Card = ({ event, hoveredCard, setHoveredCard }) => {
         }}
         className="relative z-10"
       >
-        <img
+        <motion.img
           src={event === 1 ? christmasImage : eventImage}  // Use imported images
           alt="Event"
           className="w-full h-48 object-cover"
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.3 }}
         />
         <div className="p-4">
           <h2 className="text-xl font-bold text-gray-200 mb-2">Event Title</h2>

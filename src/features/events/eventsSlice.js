@@ -1,9 +1,16 @@
+
 import { createSlice } from '@reduxjs/toolkit';
 import eidimage from '../../assets/event_1737999482266.webp';
 import christmasimage from '../../assets/christmas.webp';
 
+// localStorage se data fetch karo (agar available hai)
+const loadEventsFromLocalStorage = () => {
+  const savedEvents = localStorage.getItem('events');
+  return savedEvents ? JSON.parse(savedEvents) : null;
+};
+
 const initialState = {
-  events: [
+  events: loadEventsFromLocalStorage() || [
     {
       id: 1,
       title: "Christmas Charity Drive",
@@ -14,7 +21,7 @@ const initialState = {
       image: christmasimage,
       description:
         "Join us for the Christmas Charity Drive event to support underprivileged families.",
-      location: "New York, USA", // Add location here
+      location: "New York, USA",
     },
     {
       id: 2,
@@ -26,7 +33,7 @@ const initialState = {
       image: eidimage,
       description:
         "Come celebrate Eid-ul-Fitr with the community in prayer and festive activities.",
-      location: "Dubai, UAE", // Add location here
+      location: "Dubai, UAE",
     },
   ],
 };
@@ -41,6 +48,9 @@ const eventsSlice = createSlice({
         ...action.payload,
       };
       state.events.push(newEvent);
+
+      // Update localStorage with the new events array
+      localStorage.setItem('events', JSON.stringify(state.events));
     },
   },
 });

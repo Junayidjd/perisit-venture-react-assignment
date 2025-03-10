@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -27,11 +26,19 @@ const CreateEvent = () => {
     category: '',
     image: '',
     location: '',
-    description: '', // Add description to the state
+    description: '',
     file: null,
   });
+  const [errorMessages, setErrorMessages] = useState({
+    title: '',
+    date: '',
+    category: '',
+    location: '',
+    description: '',
+    image: '',
+  });
   const [successMessage, setSuccessMessage] = useState('');
-  const [imagePreview, setImagePreview] = useState(null); // To show image preview
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,7 +48,7 @@ const CreateEvent = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // Get the first file
     if (file) {
-      setNewEvent({ ...newEvent, file: file }); // Store the file in the state
+      setNewEvent({ ...newEvent, file: file });
       setImagePreview(URL.createObjectURL(file)); // Create a preview URL for the image
     }
   };
@@ -50,31 +57,71 @@ const CreateEvent = () => {
     setNewEvent({ ...newEvent, category: value });
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    let errors = {
+      title: '',
+      date: '',
+      category: '',
+      location: '',
+      description: '',
+      image: '',
+    };
+
+    // Title validation
+    if (!newEvent.title) {
+      errors.title = 'Event title is required.';
+      isValid = false;
+    }
+
+    // Date validation
+    if (!newEvent.date) {
+      errors.date = 'Event date is required.';
+      isValid = false;
+    }
+
+    // Category validation
+    if (!newEvent.category) {
+      errors.category = 'Event category is required.';
+      isValid = false;
+    }
+
+    // Location validation
+    if (!newEvent.location) {
+      errors.location = 'Event location is required.';
+      isValid = false;
+    }
+
+    // Description validation
+    if (!newEvent.description) {
+      errors.description = 'Event description is required.';
+      isValid = false;
+    }
+
+    // Image validation (either file upload or URL)
+    if (!newEvent.file && !newEvent.image) {
+      errors.image = 'Event image is required.';
+      isValid = false;
+    }
+
+    setErrorMessages(errors);
+    return isValid;
+  };
+
   const handleSubmit = () => {
-    if (
-      !newEvent.title ||
-      !newEvent.date ||
-      !newEvent.category ||
-      !newEvent.location ||
-      !newEvent.description // Ensure description is also filled
-    ) {
-      setSuccessMessage('Please fill all required fields.');
+    // Validate form before submitting
+    if (!validateForm()) {
+      setSuccessMessage('');
       return;
     }
 
-    // If a file is uploaded, we can handle it by uploading it to your server or storing locally
-    // For simplicity, we will assume the image is just the file URL here
-    const imageToUpload = newEvent.file ? imagePreview : newEvent.image; // Use the file URL if uploaded
-
-    if (!imageToUpload && !newEvent.file) {
-      setSuccessMessage('Please provide an image (either URL or file upload).');
-      return;
-    }
+    // If file is uploaded, use the file preview or use image URL if no file
+    const imageToUpload = newEvent.file ? imagePreview : newEvent.image;
 
     // Prepare the final event object
     const eventData = {
       ...newEvent,
-      image: imageToUpload, // Set the image to the file URL if uploaded
+      image: imageToUpload,
     };
 
     dispatch(addEvent(eventData)); // Dispatch the event to the Redux store
@@ -115,6 +162,8 @@ const CreateEvent = () => {
             variant="outlined"
             InputLabelProps={{ style: { color: '#b3b3b3' } }}
             InputProps={{ style: { color: '#ffffff' } }}
+            error={!!errorMessages.title}
+            helperText={errorMessages.title}
           />
           
           {/* Event Date */}
@@ -130,6 +179,8 @@ const CreateEvent = () => {
             required
             variant="outlined"
             InputProps={{ style: { color: '#ffffff' } }}
+            error={!!errorMessages.date}
+            helperText={errorMessages.date}
           />
           
           {/* Event Category */}
@@ -150,6 +201,9 @@ const CreateEvent = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
+            {errorMessages.category && (
+              <p className="text-red-500 text-sm">{errorMessages.category}</p>
+            )}
           </div>
 
           {/* Event Location */}
@@ -164,6 +218,8 @@ const CreateEvent = () => {
             variant="outlined"
             InputLabelProps={{ style: { color: '#b3b3b3' } }}
             InputProps={{ style: { color: '#ffffff' } }}
+            error={!!errorMessages.location}
+            helperText={errorMessages.location}
           />
 
           {/* Event Description */}
@@ -180,6 +236,8 @@ const CreateEvent = () => {
             variant="outlined"
             InputLabelProps={{ style: { color: '#b3b3b3' } }}
             InputProps={{ style: { color: '#ffffff' } }}
+            error={!!errorMessages.description}
+            helperText={errorMessages.description}
           />
           
           {/* Image URL */}
@@ -195,6 +253,8 @@ const CreateEvent = () => {
               variant="outlined"
               InputLabelProps={{ style: { color: '#b3b3b3' } }}
               InputProps={{ style: { color: '#ffffff' } }}
+              error={!!errorMessages.image}
+              helperText={errorMessages.image}
             />
           )}
 

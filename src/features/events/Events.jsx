@@ -1,13 +1,121 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import Header from '../../components/Header';
-import { Button, Chip } from '@mui/material';
-import { motion, useMotionValue, useTransform } from 'framer-motion'; // Import Framer Motion
+
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import Header from "../../components/Header";
+import { Button, Chip } from "@mui/material";
+import { motion } from "framer-motion";
+import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton
+
+// SkeletonCard Component
+function SkeletonCard() {
+  return (
+    <div className="bg-gray-800 rounded-lg shadow-md overflow-hidden">
+      {/* Image Skeleton */}
+      <Skeleton className="h-48 w-full rounded-none" />
+
+      {/* Content Skeleton */}
+      <div className="p-4">
+        {/* Category and Type Skeleton */}
+        <div className="flex justify-between items-start mb-2">
+          <Skeleton className="h-6 w-20 rounded-full" /> {/* Category */}
+          <Skeleton className="h-6 w-16 rounded-full" /> {/* Type */}
+        </div>
+
+        {/* Title Skeleton */}
+        <Skeleton className="h-6 w-3/4 mb-2" />
+
+        {/* Date and Time Skeleton */}
+        <Skeleton className="h-4 w-1/2 mb-2" />
+
+        {/* Location Skeleton */}
+        <Skeleton className="h-4 w-3/4 mb-4" />
+
+        {/* Button Skeleton */}
+        <Skeleton className="h-10 w-full rounded-lg" />
+      </div>
+    </div>
+  );
+}
 
 const Events = () => {
   const events = useSelector((state) => state.events.events);
-  const [filter, setFilter] = useState("Today");
+  const [filter, setFilter] = useState("All");
+  const [isLoading, setIsLoading] = useState(true); // Loading state
+
+  // Simulate loading delay
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 seconds delay
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Function to filter events based on the selected filter
+  const getFilteredEvents = () => {
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    switch (filter) {
+      case "Today":
+        return events.filter((event) => {
+          const eventDate = new Date(event.date);
+          return (
+            eventDate.getDate() === today.getDate() &&
+            eventDate.getMonth() === today.getMonth() &&
+            eventDate.getFullYear() === today.getFullYear()
+          );
+        });
+
+      case "Tomorrow":
+        return events.filter((event) => {
+          const eventDate = new Date(event.date);
+          return (
+            eventDate.getDate() === tomorrow.getDate() &&
+            eventDate.getMonth() === tomorrow.getMonth() &&
+            eventDate.getFullYear() === tomorrow.getFullYear()
+          );
+        });
+
+      case "This Week":
+        const startOfWeek = new Date(today);
+        startOfWeek.setDate(today.getDate() - today.getDay()); // Start of the week (Sunday)
+        const endOfWeek = new Date(today);
+        endOfWeek.setDate(today.getDate() + (6 - today.getDay())); // End of the week (Saturday)
+
+        return events.filter((event) => {
+          const eventDate = new Date(event.date);
+          return eventDate >= startOfWeek && eventDate <= endOfWeek;
+        });
+
+      case "Next Week":
+        const startOfNextWeek = new Date(today);
+        startOfNextWeek.setDate(today.getDate() + (7 - today.getDay())); // Start of next week (Sunday)
+        const endOfNextWeek = new Date(startOfNextWeek);
+        endOfNextWeek.setDate(startOfNextWeek.getDate() + 6); // End of next week (Saturday)
+
+        return events.filter((event) => {
+          const eventDate = new Date(event.date);
+          return eventDate >= startOfNextWeek && eventDate <= endOfNextWeek;
+        });
+
+      case "This Month":
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // Start of the month
+        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // End of the month
+
+        return events.filter((event) => {
+          const eventDate = new Date(event.date);
+          return eventDate >= startOfMonth && eventDate <= endOfMonth;
+        });
+
+      case "All":
+      default:
+        return events;
+    }
+  };
+
+  const filteredEvents = getFilteredEvents();
 
   return (
     <motion.div
@@ -32,7 +140,7 @@ const Events = () => {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="flex space-x-4 mb-6"
         >
-          {["Today", "Tomorrow", "This Week", "Next Week", "This Month"].map(
+          {["All", "Today", "Tomorrow", "This Week", "Next Week", "This Month"].map(
             (period) => (
               <Button
                 key={period}
@@ -52,123 +160,70 @@ const Events = () => {
 
         {/* Event Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {events.map((event, index) => (
-            <Card key={event.id} event={event} index={index} />
-          ))}
+          {isLoading
+            ? // Show skeleton cards while loading
+              Array.from({ length: 4 }).map((_, index) => (
+                <SkeletonCard key={index} />
+              ))
+            : // Show actual event cards after loading
+              filteredEvents.map((event) => (
+                <motion.div
+                  key={event.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+                >
+                  {/* Event Image */}
+                  <motion.img
+                    src={event.image}
+                    alt={event.title}
+                    className="w-full h-48 object-cover"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+
+                  {/* Event Details */}
+                  <div className="p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <Chip
+                        label={event.category}
+                        color="primary"
+                        className="mb-2"
+                      />
+                      <Chip
+                        label={event.type}
+                        color={event.type === "Free" ? "success" : "warning"}
+                        className="bg-green-100 text-green-800"
+                      />
+                    </div>
+
+                    {/* Event Title */}
+                    <h2 className="text-xl font-bold text-gray-200 mb-2">
+                      {event.title}
+                    </h2>
+
+                    {/* Event Date and Time */}
+                    <p className="text-gray-400 mb-2">
+                      {event.date} | {event.time}
+                    </p>
+
+                    {/* Event Location */}
+                    <p className="text-gray-400 mb-4">Location: {event.location}</p>
+
+                    {/* View Details Button */}
+                    <Link
+                      to={`/event/${event.id}`}
+                      className="block w-full bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
         </div>
       </div>
-    </motion.div>
-  );
-};
-
-// Card Component with Cursor Movement and Border Light Effect
-const Card = ({ event, index }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const rotateX = useTransform(y, [-100, 100], [10, -10]);
-  const rotateY = useTransform(x, [-100, 100], [-10, 10]);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const offsetX = e.clientX - rect.left - rect.width / 2;
-    const offsetY = e.clientY - rect.top - rect.height / 2;
-
-    x.set(offsetX);
-    y.set(offsetY);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.div
-      style={{
-        perspective: 1000,
-        transformStyle: 'preserve-3d',
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden group"
-    >
-      {/* Border Light Effect */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          borderRadius: '0.5rem',
-          border: '2px solid transparent',
-          background: `linear-gradient(45deg, rgba(59, 130, 246, 0.8), rgba(168, 85, 247, 0.8)) border-box`,
-          mask: `linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)`,
-          WebkitMask: `linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)`,
-          WebkitMaskComposite: 'destination-out',
-          maskComposite: 'exclude',
-          pointerEvents: 'none',
-        }}
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      />
-
-      {/* Card Content */}
-      <motion.div
-        style={{
-          rotateX,
-          rotateY,
-          transformStyle: 'preserve-3d',
-        }}
-        className="relative z-10"
-      >
-        <motion.img
-          src={event.image} // Updated path
-          alt={event.title}
-          className="w-full h-48 object-cover"
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.3 }}
-        />
-        <div className="p-4">
-          <div className="flex justify-between items-start mb-2">
-            <Chip
-              label={event.category}
-              color="primary"
-              className="mb-2"
-            />
-            <Chip
-              label={event.type}
-              color={event.type === "Free" ? "success" : "warning"}
-              className="bg-green-100 text-green-800"
-            />
-          </div>
-
-          {/* Event Title */}
-          <h2 className="text-xl font-bold text-gray-200 mb-2">
-            {event.title}
-          </h2>
-
-          {/* Event Date and Time */}
-          <p className="text-gray-400 mb-2">
-            {event.date} | {event.time}
-          </p>
-
-          {/* Event Location */}
-          <p className="text-gray-400 mb-4">
-            Location: {event.location}
-          </p>
-
-          {/* View Details Button */}
-          <Link
-            to={`/event/${event.id}`}
-            className="block w-full bg-blue-600 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-700"
-          >
-            View Details
-          </Link>
-        </div>
-      </motion.div>
     </motion.div>
   );
 };

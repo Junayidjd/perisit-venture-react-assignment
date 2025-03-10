@@ -30,6 +30,8 @@ The **Persist Venture Assignment** is a React web application that showcases eve
 
 
 ![Home Page](./assets/home-page.png)
+![IMG_20240417_073044_189](https://github.com/user-attachments/assets/0a69901b-4128-4676-b831-fa1b67077226)
+
 
 ⚙️ **Installation**
 

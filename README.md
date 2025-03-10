@@ -26,6 +26,11 @@ The **Persist Venture Assignment** is a React web application that showcases eve
 ✅ **Smooth Animations**:
 - Uses **Framer Motion** for interactive and smooth transitions across the app.
 
+
+
+
+![Home Page](./assets/home-page.png)
+
 ⚙️ **Installation**
 
 ### Prerequisites

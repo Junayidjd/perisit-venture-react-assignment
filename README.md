@@ -1,52 +1,38 @@
-Persist Venture Assignment
-This is a React application built using Vite, Redux Toolkit, Tailwind CSS, Material UI, Chakra UI, and Framer Motion. The app allows users to manage events, with features like filtering, viewing details, and smooth animations.
+# Persist Venture Assignment
 
-Features:
-Event management with various filters (Today, Tomorrow, This Week, etc.)
-Animated transitions for a smooth user experience
-Redux for state management of events
-Tailwind CSS for utility-first styling
-Chakra UI and Material UI components for modern UI design
+This is a React application built with **Vite**, **Redux Toolkit**, **Tailwind CSS**, **Material UI**, **Chakra UI**, and **Framer Motion**. The app allows users to manage events with features like filtering, viewing details, and smooth animations.
 
+## Features
 
+- **Event Management**: Filter events based on the following criteria:
+  - Today
+  - Tomorrow
+  - This Week
+  - This Month
+- **Animated Transitions**: Smooth animations for better user experience.
+- **State Management**: Using Redux Toolkit for managing event data.
+- **Modern UI**: Leveraging Material UI and Chakra UI components for a responsive and accessible design.
+- **Responsive Design**: The app is fully responsive and works well on different screen sizes.
 
-
-
-
-src/
-├── assets/                          # Static assets (e.g., images)
-│   ├── christmas.webp
-│   └── event_1737999482266.webp     
-├── components/  
-│   └── ui/    
-│           ├── input.tsx, select.tsx  # UI components (inputs, selects, etc.)
-│   ├── Header.jsx                   # Header Component
-│   ├── CreateEvent.jsx              # Event creation page/component
-│   ├── Home.jsx                     # Home page
-│   ├── About.jsx                    # About page
-├── features/                        
-│   └── events/
-│       ├── Events.jsx                # Events listing component
-│       └── eventsSlice.js            # Redux slice for events
-├── lib/
-│       └── utils.ts                 # Utility functions
-├── pages/                           
-│   └── EventDetails.jsx             # Event details page
-├── app/                             
-│   └── store.js                     # Redux store configuration
-├── App.js                            # Main App component
-└── index.js                         # Entry point for React
+## Project Structure
 
 
 
+## Prerequisites
 
+Ensure you have the following tools installed on your system:
 
+- **Node.js** (v14 or higher)
+- **npm** (v6 or higher)
 
-Prerequisites
-Ensure you have the following tools installed:
+## Setup and Installation
 
-Node.js (v14 or higher)
-npm (v6 or higher)
+### 1. **Clone the Repository**
+
+First, clone the repository to your local machine:
+
+git clone https://github.com/Junayidjd/perisit-venture-react-assignment
+cd persist-venture-assignment
 
 
 

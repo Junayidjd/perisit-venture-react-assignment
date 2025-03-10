@@ -39,8 +39,6 @@ cd persist-venture-assignment
 
 Setup and Installation
 1. Clone the Repository
-bash
-Copy
 git clone https://github.com/Junayidjd/perisit-venture-react-assignment
 cd persist-venture-assignment
 

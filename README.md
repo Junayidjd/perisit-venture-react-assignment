@@ -7,6 +7,8 @@ The **Persist Venture Assignment** is a React web application that showcases eve
 🔗 [Communion HubVercel Demo](https://perisit-venture-react-assignment.vercel.app/)  
 🔗 [CommunionHub Netlify Demo](https://persist-venture-assignment.netlify.app/)
 
+
+  
 ✨ **Features**
 
 
@@ -30,6 +32,20 @@ The **Persist Venture Assignment** is a React web application that showcases eve
 Home page with content and an image below the text.
 
 ![image](https://github.com/user-attachments/assets/31435c07-00ec-4d04-96fb-3a157568e5b8)
+
+### 📅 Event Page
+Event page with content and an image below the text.
+![image](https://github.com/user-attachments/assets/324624ae-0ed2-4afd-923f-f91197a4d164)
+
+
+### ✍️ About Page Page
+![image](https://github.com/user-attachments/assets/059cb169-2357-49c8-b839-ad980d00f73b)
+
+
+### ✍️ Create Event Page
+Create Event page with a form and an image below the text.
+
+![image](https://github.com/user-attachments/assets/3f68af1b-8e4e-447e-955d-a91f69138899)
 
 
 ⚙️ **Installation**

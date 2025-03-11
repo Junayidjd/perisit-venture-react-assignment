@@ -5,7 +5,7 @@ The **Persist Venture Assignment** is a React web application that showcases eve
 
 📌 **Live Demo**  
 🔗 [Communion HubVercel Demo](https://perisit-venture-react-assignment-6u3t.vercel.app/)  
-🔗 [CommunionHub Netlify Demo](https://persist-venture-assignment.netlify.app/)
+🔗 [CommunionHub Netlify Demo](https://persist-venture-assignment-junaid.netlify.app/)
 
 
   

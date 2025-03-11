@@ -4,7 +4,7 @@
 The **Persist Venture Assignment** is a React web application that showcases event management functionality with a modern user interface. It allows users to view, filter, and explore events with smooth animations. The app is built using **Vite**, **Redux Toolkit**, **Tailwind CSS**, **Material UI**, **Chakra UI**, and **Framer Motion** to provide an engaging user experience.
 
 📌 **Live Demo**  
-🔗 [Communion HubVercel Demo](https://perisit-venture-react-assignment.vercel.app/)  
+🔗 [Communion HubVercel Demo](https://perisit-venture-react-assignment-6u3t.vercel.app/)  
 🔗 [CommunionHub Netlify Demo](https://persist-venture-assignment.netlify.app/)
 
 
